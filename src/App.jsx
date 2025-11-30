@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import { History, Trash2, Calculator } from 'lucide-react'
+import { History, Trash2, Calculator, Sliders } from 'lucide-react'
+import { sin, cos, tan, log, log10, sqrt, pi, e } from 'mathjs'
 
 function App() {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -10,6 +11,7 @@ function App() {
   const [waitingForOperand, setWaitingForOperand] = useState(false)
   const [history, setHistory] = useState([])
   const [showHistory, setShowHistory] = useState(false)
+  const [scientificMode, setScientificMode] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -99,18 +101,84 @@ function App() {
     setHistory([])
   }
 
+  const performScientificOperation = (operation) => {
+    const inputValue = parseFloat(display)
+    let result
+    let operationName
+
+    switch (operation) {
+      case 'sin':
+        result = sin(inputValue * (pi / 180)) // Convert degrees to radians
+        operationName = `sin(${inputValue}°)`
+        break
+      case 'cos':
+        result = cos(inputValue * (pi / 180))
+        operationName = `cos(${inputValue}°)`
+        break
+      case 'tan':
+        result = tan(inputValue * (pi / 180))
+        operationName = `tan(${inputValue}°)`
+        break
+      case 'log':
+        result = log10(inputValue)
+        operationName = `log(${inputValue})`
+        break
+      case 'ln':
+        result = log(inputValue)
+        operationName = `ln(${inputValue})`
+        break
+      case 'sqrt':
+        result = sqrt(inputValue)
+        operationName = `√(${inputValue})`
+        break
+      case 'square':
+        result = inputValue * inputValue
+        operationName = `(${inputValue})²`
+        break
+      case 'pi':
+        result = pi
+        operationName = 'π'
+        break
+      case 'e':
+        result = e
+        operationName = 'e'
+        break
+      default:
+        return
+    }
+
+    const calculation = `${operationName} = ${result}`
+    setHistory(prev => [...prev, {
+      id: Date.now(),
+      calculation,
+      timestamp: new Date()
+    }])
+
+    setDisplay(String(result))
+    setWaitingForOperand(true)
+  }
+
   return (
     <div className="calculator">
       <div className="calculator-header">
         <Calculator size={24} className="calculator-icon" />
         <h1 className="calculator-title">Advanced Calculator</h1>
-        <button
-          className="history-toggle"
-          onClick={() => setShowHistory(!showHistory)}
-          title="Toggle History"
-        >
-          <History size={20} />
-        </button>
+        <div className="header-buttons">
+          <button
+            className={`mode-toggle ${scientificMode ? 'active' : ''}`}
+            onClick={() => setScientificMode(!scientificMode)}
+            title="Toggle Scientific Mode"
+          >
+            <Sliders size={20} />
+          </button>
+          <button
+            className="history-toggle"
+            onClick={() => setShowHistory(!showHistory)}
+            title="Toggle History"
+          >
+            <History size={20} />
+          </button>
+        </div>
       </div>
       <div className="calculator-clock">{format(currentTime, 'PPpp')}</div>
       <div className="calculator-display">{display}</div>
@@ -138,6 +206,19 @@ function App() {
         </div>
       )}
 
+      {scientificMode && (
+        <div className="scientific-keys">
+          <button onClick={() => performScientificOperation('sin')}>sin</button>
+          <button onClick={() => performScientificOperation('cos')}>cos</button>
+          <button onClick={() => performScientificOperation('tan')}>tan</button>
+          <button onClick={() => performScientificOperation('log')}>log</button>
+          <button onClick={() => performScientificOperation('ln')}>ln</button>
+          <button onClick={() => performScientificOperation('sqrt')}>√</button>
+          <button onClick={() => performScientificOperation('square')}>x²</button>
+          <button onClick={() => performScientificOperation('pi')}>π</button>
+          <button onClick={() => performScientificOperation('e')}>e</button>
+        </div>
+      )}
       <div className="calculator-keypad">
         <div className="input-keys">
           <div className="digit-keys">

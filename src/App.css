@@ -51,7 +51,14 @@ body {
   flex: 1;
 }
 
-.history-toggle {
+.header-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.history-toggle,
+.mode-toggle {
   background: #444;
   border: none;
   border-radius: 8px;
@@ -64,13 +71,23 @@ body {
   justify-content: center;
 }
 
-.history-toggle:hover {
+.history-toggle:hover,
+.mode-toggle:hover {
   background: #555;
   transform: translateY(-2px);
 }
 
-.history-toggle:active {
+.history-toggle:active,
+.mode-toggle:active {
   transform: translateY(0);
+}
+
+.mode-toggle.active {
+  background: #667eea;
+}
+
+.mode-toggle.active:hover {
+  background: #5568d3;
 }
 
 .calculator-clock {
@@ -176,6 +193,24 @@ body {
   color: #888;
   font-size: 0.75rem;
   font-family: 'Courier New', monospace;
+}
+
+.scientific-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.scientific-keys button {
+  background: #667eea;
+  font-size: 1rem;
+  padding: 12px;
+  font-weight: 500;
+}
+
+.scientific-keys button:hover {
+  background: #5568d3;
 }
 
 .calculator-keypad {
