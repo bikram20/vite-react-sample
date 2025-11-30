@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
+import { History, Trash2, Calculator } from 'lucide-react'
 
 function App() {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -7,6 +8,8 @@ function App() {
   const [previousValue, setPreviousValue] = useState(null)
   const [operation, setOperation] = useState(null)
   const [waitingForOperand, setWaitingForOperand] = useState(false)
+  const [history, setHistory] = useState([])
+  const [showHistory, setShowHistory] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -77,6 +80,14 @@ function App() {
 
     if (previousValue !== null && operation) {
       const newValue = calculate(previousValue, inputValue, operation)
+      const calculation = `${previousValue} ${operation} ${inputValue} = ${newValue}`
+
+      setHistory(prev => [...prev, {
+        id: Date.now(),
+        calculation,
+        timestamp: new Date()
+      }])
+
       setDisplay(String(newValue))
       setPreviousValue(null)
       setOperation(null)
@@ -84,11 +95,49 @@ function App() {
     }
   }
 
+  const clearHistory = () => {
+    setHistory([])
+  }
+
   return (
     <div className="calculator">
-      <h1 className="calculator-title">Advanced Calculator</h1>
+      <div className="calculator-header">
+        <Calculator size={24} className="calculator-icon" />
+        <h1 className="calculator-title">Advanced Calculator</h1>
+        <button
+          className="history-toggle"
+          onClick={() => setShowHistory(!showHistory)}
+          title="Toggle History"
+        >
+          <History size={20} />
+        </button>
+      </div>
       <div className="calculator-clock">{format(currentTime, 'PPpp')}</div>
       <div className="calculator-display">{display}</div>
+
+      {showHistory && (
+        <div className="calculator-history">
+          <div className="history-header">
+            <span>Calculation History</span>
+            <button onClick={clearHistory} className="clear-history" title="Clear History">
+              <Trash2 size={16} />
+            </button>
+          </div>
+          <div className="history-items">
+            {history.length === 0 ? (
+              <div className="history-empty">No calculations yet</div>
+            ) : (
+              history.slice().reverse().map(item => (
+                <div key={item.id} className="history-item">
+                  <div className="history-calculation">{item.calculation}</div>
+                  <div className="history-time">{format(item.timestamp, 'HH:mm:ss')}</div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="calculator-keypad">
         <div className="input-keys">
           <div className="digit-keys">

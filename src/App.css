@@ -30,12 +30,47 @@ body {
   max-width: 320px;
 }
 
+.calculator-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.calculator-icon {
+  color: #667eea;
+  flex-shrink: 0;
+}
+
 .calculator-title {
   color: #fff;
   font-size: 1.5rem;
   text-align: center;
-  margin-bottom: 15px;
   font-weight: 600;
+  flex: 1;
+}
+
+.history-toggle {
+  background: #444;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-toggle:hover {
+  background: #555;
+  transform: translateY(-2px);
+}
+
+.history-toggle:active {
+  transform: translateY(0);
 }
 
 .calculator-clock {
@@ -60,6 +95,87 @@ body {
   justify-content: flex-end;
   word-wrap: break-word;
   word-break: break-all;
+}
+
+.calculator-history {
+  background: #333;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.history-header {
+  background: #444;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.clear-history {
+  background: #ef4444;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-history:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.history-items {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.history-empty {
+  color: #888;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+
+.history-item {
+  background: #444;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.history-item:hover {
+  background: #4a4a4a;
+  transform: translateX(5px);
+}
+
+.history-item:last-child {
+  margin-bottom: 0;
+}
+
+.history-calculation {
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+}
+
+.history-time {
+  color: #888;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
 }
 
 .calculator-keypad {
